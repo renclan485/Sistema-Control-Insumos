@@ -1,0 +1,114 @@
+-- 1. CREACIÓN DE TABLAS
+
+CREATE TABLE TipoInsumo (
+    idTipoInsumo INT IDENTITY(1,1) PRIMARY KEY,
+    nombreTipo VARCHAR(100) NOT NULL
+);
+GO
+
+CREATE TABLE Insumo (
+    idInsumo INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    stock INT NOT NULL,
+    estado BIT NOT NULL DEFAULT 1, -- 1=Activo, 0=Inactivo (Eliminación Lógica)
+    idTipoInsumo INT NOT NULL,
+    CONSTRAINT FK_Insumo_TipoInsumo FOREIGN KEY (idTipoInsumo) REFERENCES TipoInsumo(idTipoInsumo)
+);
+GO
+
+CREATE TABLE LogAuditoria (
+    idLog INT IDENTITY(1,1) PRIMARY KEY,
+    fecha DATETIME NOT NULL DEFAULT GETDATE(),
+    accion VARCHAR(255) NOT NULL,
+    idInsumo INT NOT NULL,
+    CONSTRAINT FK_Log_Insumo FOREIGN KEY (idInsumo) REFERENCES Insumo(idInsumo)
+);
+GO
+
+
+-- 2. PROCEDIMIENTOS ALMACENADOS (CRUD)
+
+-- Crear (Create - RF01)
+CREATE PROCEDURE sp_Insumo_Crear
+    @nombre VARCHAR(150),
+    @stock INT,
+    @idTipoInsumo INT
+AS
+BEGIN
+    INSERT INTO Insumo (nombre, stock, estado, idTipoInsumo)
+    VALUES (@nombre, @stock, 1, @idTipoInsumo);
+END;
+GO
+
+-- Leer (Read - RF02)
+CREATE PROCEDURE sp_Insumo_Leer
+    @idInsumo INT = NULL
+AS
+BEGIN
+    SELECT idInsumo, nombre, stock, estado, idTipoInsumo
+    FROM Insumo
+    WHERE (@idInsumo IS NULL OR idInsumo = @idInsumo)
+      AND estado = 1; -- Solo retorna insumos activos
+END;
+GO
+
+-- Actualizar (Update - RF03)
+CREATE PROCEDURE sp_Insumo_Actualizar
+    @idInsumo INT,
+    @nombre VARCHAR(150),
+    @stock INT,
+    @idTipoInsumo INT
+AS
+BEGIN
+    UPDATE Insumo
+    SET nombre = @nombre,
+        stock = @stock,
+        idTipoInsumo = @idTipoInsumo
+    WHERE idInsumo = @idInsumo;
+END;
+GO
+
+-- Eliminar (Delete - RF04 - Eliminación Lógica)
+CREATE PROCEDURE sp_Insumo_Eliminar
+    @idInsumo INT
+AS
+BEGIN
+    UPDATE Insumo
+    SET estado = 0
+    WHERE idInsumo = @idInsumo;
+END;
+GO
+
+
+-- 3. TRIGGER DE AUDITORÍA
+
+CREATE TRIGGER trg_Insumo_Auditoria
+ON Insumo
+AFTER UPDATE
+AS
+BEGIN
+    DECLARE @idInsumo INT, 
+            @stockAntiguo INT, 
+            @stockNuevo INT, 
+            @estadoNuevo BIT,
+            @accion VARCHAR(255);
+    
+    -- Extraer valores
+    SELECT @idInsumo = ins.idInsumo, @stockNuevo = ins.stock, @estadoNuevo = ins.estado FROM inserted ins;
+    SELECT @stockAntiguo = del.stock FROM deleted del;
+    
+    -- Lógica para determinar la acción
+    IF UPDATE(estado) AND @estadoNuevo = 0
+    BEGIN
+        SET @accion = 'Baja lógica (Eliminación)';
+    END
+    ELSE
+    BEGIN
+        SET @accion = 'Actualización - Stock Anterior: ' + CAST(@stockAntiguo AS VARCHAR) + ' | Stock Nuevo: ' + CAST(@stockNuevo AS VARCHAR);
+    END
+    
+    -- Registro en auditoría
+    INSERT INTO LogAuditoria (fecha, accion, idInsumo)
+    VALUES (GETDATE(), @accion, @idInsumo);
+END;
+GO

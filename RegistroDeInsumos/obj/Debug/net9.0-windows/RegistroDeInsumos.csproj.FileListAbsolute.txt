@@ -1,0 +1,14 @@
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\bin\Debug\net9.0-windows\RegistroDeInsumos.exe
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\bin\Debug\net9.0-windows\RegistroDeInsumos.deps.json
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\bin\Debug\net9.0-windows\RegistroDeInsumos.runtimeconfig.json
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\bin\Debug\net9.0-windows\RegistroDeInsumos.dll
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\bin\Debug\net9.0-windows\RegistroDeInsumos.pdb
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.AssemblyInfoInputs.cache
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.AssemblyInfo.cs
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.csproj.CoreCompileInputs.cache
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.dll
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\refint\RegistroDeInsumos.dll
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.pdb
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\RegistroDeInsumos.genruntimeconfig.cache
+C:\Users\Laboratorio_Sj\Downloads\repost\RegistroDeInsumos\obj\Debug\net9.0-windows\ref\RegistroDeInsumos.dll
